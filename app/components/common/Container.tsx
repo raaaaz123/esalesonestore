@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 interface ContainerProps {
@@ -9,7 +11,7 @@ interface ContainerProps {
 export const Container: React.FC<ContainerProps> = ({
   children,
   className = '',
-  maxWidth = 'lg',
+  maxWidth = 'xl',
 }) => {
   const maxWidthClasses = {
     xs: 'max-w-xs',
@@ -17,12 +19,12 @@ export const Container: React.FC<ContainerProps> = ({
     md: 'max-w-md',
     lg: 'max-w-lg',
     xl: 'max-w-xl',
-    '2xl': 'max-w-2xl',
+    '2xl': 'max-w-7xl',
     full: 'max-w-full',
   };
 
   return (
-    <div className={`w-full mx-auto px-4 sm:px-6 ${maxWidthClasses[maxWidth]} ${className}`}>
+    <div className={`w-full mx-auto px-4 sm:px-6 md:px-8 ${maxWidthClasses[maxWidth]} ${className}`}>
       {children}
     </div>
   );

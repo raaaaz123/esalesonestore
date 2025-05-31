@@ -1,3 +1,5 @@
+'use client';
+
 import React, { forwardRef } from 'react';
 
 interface Option {
@@ -11,6 +13,9 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   error?: string;
   helperText?: string;
   fullWidth?: boolean;
+  variant?: 'outlined' | 'filled' | 'underlined';
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  placeholder?: string;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
@@ -20,16 +25,35 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     error, 
     helperText, 
     fullWidth = false, 
+    variant = 'outlined',
+    rounded = 'md',
     className = '', 
-    id, 
+    id,
+    placeholder,
     ...props 
   }, ref) => {
     const selectId = id || `select-${label?.toLowerCase().replace(/\s+/g, '-')}-${Math.random().toString(36).substring(2, 9)}`;
     
-    const baseSelectClasses = 'block rounded-md border-0 py-2.5 pl-3 pr-10 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset text-gray-900 appearance-none';
+    const baseSelectClasses = 'block w-full py-2.5 pl-3 pr-10 shadow-sm text-gray-900 appearance-none transition-all duration-200';
+    
+    const variantClasses = {
+      outlined: 'border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white',
+      filled: 'border border-transparent bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+      underlined: 'border-0 border-b-2 border-gray-300 focus:ring-0 focus:border-blue-500 bg-transparent px-0',
+    };
+    
+    const roundedClasses = variant === 'underlined' ? '' : {
+      none: 'rounded-none',
+      sm: 'rounded-sm',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      full: 'rounded-full',
+    }[rounded];
+    
     const stateClasses = error 
-      ? 'ring-red-300 focus:ring-red-500' 
-      : 'ring-gray-300 focus:ring-indigo-500';
+      ? 'ring-red-300 border-red-300 focus:ring-red-500 focus:border-red-500' 
+      : '';
+    
     const widthClass = fullWidth ? 'w-full' : '';
     
     return (
@@ -43,11 +67,16 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <select
             ref={ref}
             id={selectId}
-            className={`${baseSelectClasses} ${stateClasses} ${widthClass}`}
+            className={`${baseSelectClasses} ${variantClasses[variant]} ${stateClasses} ${roundedClasses} ${widthClass}`}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={error ? `${selectId}-error` : helperText ? `${selectId}-helper` : undefined}
             {...props}
           >
+            {placeholder && (
+              <option value="" disabled={props.required}>
+                {placeholder}
+              </option>
+            )}
             {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}

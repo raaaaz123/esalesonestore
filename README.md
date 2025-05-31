@@ -1,24 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ESales One Store
+
+A modern e-commerce store built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file in the root directory with the following variables:
+
+```
+NEXT_PUBLIC_MAILTRAP_API_TOKEN=your_api_token_here
+NEXT_PUBLIC_MAILTRAP_INBOX_ID=3744334
+```
+
+Replace `your_api_token_here` with your actual Mailtrap API token.
+
+## Features
+
+- Product catalog with search and filtering
+- Product detail pages
+- Shopping cart functionality
+- Checkout process
+- Order confirmation
+- Responsive design
+- Email notifications via Mailtrap
+
+## Technologies Used
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- React Hook Form
+- React Hot Toast
+- Mailtrap for email testing
 
 ## Learn More
 

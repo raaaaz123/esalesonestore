@@ -1,3 +1,5 @@
+'use client';
+
 import React, { forwardRef } from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -7,6 +9,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  variant?: 'outlined' | 'filled' | 'underlined';
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -17,19 +21,37 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     fullWidth = false, 
     leftIcon, 
     rightIcon, 
+    variant = 'outlined',
+    rounded = 'md',
     className = '', 
     id, 
     ...props 
   }, ref) => {
     const inputId = id || `input-${label?.toLowerCase().replace(/\s+/g, '-')}-${Math.random().toString(36).substring(2, 9)}`;
     
-    const baseInputClasses = 'block rounded-md border-0 py-2.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset text-gray-900';
+    const baseInputClasses = 'block w-full py-2.5 shadow-sm text-gray-900 transition-all duration-200';
+    
+    const variantClasses = {
+      outlined: 'border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white',
+      filled: 'border border-transparent bg-gray-100 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+      underlined: 'border-0 border-b-2 border-gray-300 focus:ring-0 focus:border-blue-500 bg-transparent px-0',
+    };
+    
+    const roundedClasses = variant === 'underlined' ? '' : {
+      none: 'rounded-none',
+      sm: 'rounded-sm',
+      md: 'rounded-md',
+      lg: 'rounded-lg',
+      full: 'rounded-full',
+    }[rounded];
+    
     const stateClasses = error 
-      ? 'ring-red-300 placeholder:text-red-300 focus:ring-red-500' 
-      : 'ring-gray-300 placeholder:text-gray-400 focus:ring-indigo-500';
+      ? 'ring-red-300 border-red-300 placeholder:text-red-300 focus:ring-red-500 focus:border-red-500' 
+      : '';
+    
     const widthClass = fullWidth ? 'w-full' : '';
-    const paddingClass = leftIcon ? 'pl-10' : 'pl-3';
-    const rightPaddingClass = rightIcon ? 'pr-10' : 'pr-3';
+    const paddingClass = leftIcon ? 'pl-10' : variant === 'underlined' ? 'pl-0' : 'pl-3';
+    const rightPaddingClass = rightIcon ? 'pr-10' : variant === 'underlined' ? 'pr-0' : 'pr-3';
     
     return (
       <div className={`${fullWidth ? 'w-full' : ''} ${className}`}>
@@ -47,7 +69,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`${baseInputClasses} ${stateClasses} ${widthClass} ${paddingClass} ${rightPaddingClass}`}
+            className={`${baseInputClasses} ${variantClasses[variant]} ${stateClasses} ${roundedClasses} ${widthClass} ${paddingClass} ${rightPaddingClass}`}
             aria-invalid={error ? 'true' : 'false'}
             aria-describedby={error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined}
             {...props}

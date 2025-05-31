@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Card } from '../common/Card';
@@ -61,7 +63,7 @@ export const OrderConfirmation: React.FC = () => {
       
       <div className="border-t border-gray-200 py-4">
         <h4 className="font-medium mb-3">Order Details</h4>
-        {order.items.map((item, index) => (
+        {order.items.map((item: any, index: number) => (
           <div key={index} className="flex justify-between mb-2">
             <div>
               <p className="text-sm font-medium">{item.variant.name}</p>
